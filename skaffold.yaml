@@ -1,0 +1,19 @@
+apiVersion: skaffold/v2beta13
+kind: Config
+build:
+  local:
+    push: false
+  artifacts:
+    - image: nginx
+      custom:
+        buildCommand: docker pull nginx && docker tag nginx:latest $IMAGE
+deploy:
+  helm:
+    releases:
+      - name: nginx
+        remoteChart: nginx
+        repo: https://charts.bitnami.com/bitnami
+requires:
+  - git:
+      repo: git@github.com:vladimir-avinkin/skaffold-bug-serviceB.git
+      ref: main
